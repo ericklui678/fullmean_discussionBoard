@@ -1,0 +1,51 @@
+<h2>Hello {{ name }} {{ userid }}</h2>
+<button (click)='logout()'>Logout</button>
+
+  <table>
+    <tr>
+      <th>Category</th>
+      <th>Topic</th>
+      <th>User Name</th>
+      <th>Posts</th>
+    </tr>
+    <tr *ngFor='let topic of topics'>
+      <td>{{ topic.category }}</td>
+      <td>{{ topic.title }}</td>
+      <td>{{ topic.username }}</td>
+      <td>placeholder</td>
+    </tr>
+  </table>
+
+<form #topicForm='ngForm' (submit)='onSubmit(topic_obj, topicForm)'>
+  Topic: <input type="text" name="topic"
+  [(ngModel)]='topic_obj.title'
+  #topic='ngModel'
+  required
+  minlength='5'>
+  <div *ngIf='topic.errors && (topic.touched || topicForm.submitted )' class='red'>
+    <div *ngIf='topic.errors.required'>Topic is required</div>
+    <div *ngIf='topic.errors.minlength'>Topic must be at least 5 characters</div>
+  </div>
+  <br>
+  Description: <textarea name="description "rows="5" cols="40"
+  [(ngModel)]='topic_obj.text'
+  #description='ngModel'
+  required
+  minlength='5'></textarea>
+  <div *ngIf='description.errors && (description.touched || topicForm.submitted )' class='red'>
+    <div *ngIf='description.errors.required'>Description is required</div>
+    <div *ngIf='description.errors.minlength'>Description must be at least 5 characters</div>
+  </div>
+  <br>
+  Category: 
+  <select name="category"
+  [(ngModel)]='topic_obj.category'
+  required>
+    <option value="HTML">HTML</option>
+    <option value="CSS">CSS</option>
+    <option value="Python">Python</option>
+    <option value="Django">Django</option>
+    <option value="Javascript">Javascript</option>
+  </select><br>
+  <input [disabled]='!topicForm.valid' type="submit">
+</form>
