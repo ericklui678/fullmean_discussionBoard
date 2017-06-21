@@ -7,5 +7,6 @@ var TopicSchema = new mongoose.Schema({
   category: { type: String, required: [true, 'category required'] },
   username: { type: String, required: [true, 'username required'] },
   _user: {type: Schema.Types.ObjectId, ref: 'User'},
+  count: { type: Number, default: 0 }
 }, { timestamps: true });
 var Topic = mongoose.model('Topic', TopicSchema);

@@ -9,6 +9,7 @@ module.exports = function(app) {
   })
   app.post('/topic', function(req, res, next){
     topics.create(req, res)
+    users.incrTopic(req, res)
   })
   app.get('/topics/show', function(req, res, next){
     topics.find(req, res)

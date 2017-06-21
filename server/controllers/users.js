@@ -20,4 +20,11 @@ module.exports = {
       }
     })
   },
+  incrTopic: function (req, res) {
+    // console.log(req.body._user);
+    User.findOneAndUpdate({_id: req.body._user}, {$inc: {tCount: 1}}, function (err, data) {
+      if(err) { console.log(err); }
+      if(data) { console.log('incremented'); }
+    })
+  }
 }
