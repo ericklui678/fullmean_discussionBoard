@@ -49,6 +49,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this._cookieService.get('username')){
+      this._router.navigate(['']);
+    }
     this._http.getTopic()
     .then( obj => {
       this.topics = obj;

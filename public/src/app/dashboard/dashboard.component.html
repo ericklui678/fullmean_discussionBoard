@@ -10,12 +10,11 @@
     </tr>
     <tr *ngFor='let topic of topics'>
       <td>{{ topic.category }}</td>
-      <td>{{ topic.title }}</td>
+      <td><a [routerLink]="['/topic/', topic._id]">{{ topic.title }}</a></td>
       <td>{{ topic.username }}</td>
       <td>{{ topic.count }}</td>
     </tr>
   </table>
-
 <form #topicForm='ngForm' (submit)='onSubmit(topic_obj, topicForm)'>
   Topic: <input type="text" name="topic"
   [(ngModel)]='topic_obj.title'

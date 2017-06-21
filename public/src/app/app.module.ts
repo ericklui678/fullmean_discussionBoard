@@ -9,12 +9,14 @@ import { HttpModule } from '@angular/http';
 import { HttpService } from './http.service';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { TopicComponent } from './topic/topic.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    TopicComponent
   ],
   imports: [
     BrowserModule,

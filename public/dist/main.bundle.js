@@ -21,6 +21,7 @@ webpackEmptyContext.id = "../../../../../src async recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__topic_topic_component__ = __webpack_require__("../../../../../src/app/topic/topic.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -33,9 +34,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 // remember to import components
 
 
+
 var routes = [
     { path: '', component: __WEBPACK_IMPORTED_MODULE_2__login_login_component__["a" /* LoginComponent */] },
     { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_3__dashboard_dashboard_component__["a" /* DashboardComponent */] },
+    { path: 'topic/:id', component: __WEBPACK_IMPORTED_MODULE_4__topic_topic_component__["a" /* TopicComponent */] },
+    { path: '**', redirectTo: '' },
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
@@ -127,6 +131,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__http_service__ = __webpack_require__("../../../../../src/app/http.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__topic_topic_component__ = __webpack_require__("../../../../../src/app/topic/topic.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -134,6 +139,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -154,7 +160,8 @@ AppModule = __decorate([
         declarations: [
             __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_8__login_login_component__["a" /* LoginComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__dashboard_dashboard_component__["a" /* DashboardComponent */]
+            __WEBPACK_IMPORTED_MODULE_9__dashboard_dashboard_component__["a" /* DashboardComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__topic_topic_component__["a" /* TopicComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -192,7 +199,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Hello {{ name }} {{ userid }}</h2>\n<button (click)='logout()'>Logout</button>\n\n  <table>\n    <tr>\n      <th>Category</th>\n      <th>Topic</th>\n      <th>User Name</th>\n      <th>Posts</th>\n    </tr>\n    <tr *ngFor='let topic of topics'>\n      <td>{{ topic.category }}</td>\n      <td>{{ topic.title }}</td>\n      <td>{{ topic.username }}</td>\n      <td>{{ topic.count }}</td>\n    </tr>\n  </table>\n\n<form #topicForm='ngForm' (submit)='onSubmit(topic_obj, topicForm)'>\n  Topic: <input type=\"text\" name=\"topic\"\n  [(ngModel)]='topic_obj.title'\n  #topic='ngModel'\n  required\n  minlength='5'>\n  <div *ngIf='topic.errors && (topic.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='topic.errors.required'>Topic is required</div>\n    <div *ngIf='topic.errors.minlength'>Topic must be at least 5 characters</div>\n  </div>\n  <br>\n  Description: <textarea name=\"description \"rows=\"5\" cols=\"40\"\n  [(ngModel)]='topic_obj.text'\n  #description='ngModel'\n  required\n  minlength='5'></textarea>\n  <div *ngIf='description.errors && (description.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='description.errors.required'>Description is required</div>\n    <div *ngIf='description.errors.minlength'>Description must be at least 5 characters</div>\n  </div>\n  <br>\n  Category: \n  <select name=\"category\"\n  [(ngModel)]='topic_obj.category'\n  required>\n    <option value=\"HTML\">HTML</option>\n    <option value=\"CSS\">CSS</option>\n    <option value=\"Python\">Python</option>\n    <option value=\"Django\">Django</option>\n    <option value=\"Javascript\">Javascript</option>\n  </select><br>\n  <input [disabled]='!topicForm.valid' type=\"submit\">\n</form>"
+module.exports = "<h2>Hello {{ name }} {{ userid }}</h2>\n<button (click)='logout()'>Logout</button>\n\n  <table>\n    <tr>\n      <th>Category</th>\n      <th>Topic</th>\n      <th>User Name</th>\n      <th>Posts</th>\n    </tr>\n    <tr *ngFor='let topic of topics'>\n      <td>{{ topic.category }}</td>\n      <td><a [routerLink]=\"['/topic/', topic._id]\">{{ topic.title }}</a></td>\n      <td>{{ topic.username }}</td>\n      <td>{{ topic.count }}</td>\n    </tr>\n  </table>\n<form #topicForm='ngForm' (submit)='onSubmit(topic_obj, topicForm)'>\n  Topic: <input type=\"text\" name=\"topic\"\n  [(ngModel)]='topic_obj.title'\n  #topic='ngModel'\n  required\n  minlength='5'>\n  <div *ngIf='topic.errors && (topic.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='topic.errors.required'>Topic is required</div>\n    <div *ngIf='topic.errors.minlength'>Topic must be at least 5 characters</div>\n  </div>\n  <br>\n  Description: <textarea name=\"description \"rows=\"5\" cols=\"40\"\n  [(ngModel)]='topic_obj.text'\n  #description='ngModel'\n  required\n  minlength='5'></textarea>\n  <div *ngIf='description.errors && (description.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='description.errors.required'>Description is required</div>\n    <div *ngIf='description.errors.minlength'>Description must be at least 5 characters</div>\n  </div>\n  <br>\n  Category: \n  <select name=\"category\"\n  [(ngModel)]='topic_obj.category'\n  required>\n    <option value=\"HTML\">HTML</option>\n    <option value=\"CSS\">CSS</option>\n    <option value=\"Python\">Python</option>\n    <option value=\"Django\">Django</option>\n    <option value=\"Javascript\">Javascript</option>\n  </select><br>\n  <input [disabled]='!topicForm.valid' type=\"submit\">\n</form>"
 
 /***/ }),
 
@@ -257,6 +264,9 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
+        if (!this._cookieService.get('username')) {
+            this._router.navigate(['']);
+        }
         this._http.getTopic()
             .then(function (obj) {
             _this.topics = obj;
@@ -407,6 +417,9 @@ var LoginComponent = (function () {
         form.resetForm();
     };
     LoginComponent.prototype.ngOnInit = function () {
+        if (this._cookieService.get('username')) {
+            this._router.navigate(['dashboard']);
+        }
     };
     return LoginComponent;
 }());
@@ -421,6 +434,67 @@ LoginComponent = __decorate([
 
 var _a, _b, _c;
 //# sourceMappingURL=login.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/topic/topic.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/topic/topic.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h1>Topic</h1>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/topic/topic.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TopicComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var TopicComponent = (function () {
+    function TopicComponent() {
+    }
+    TopicComponent.prototype.ngOnInit = function () {
+    };
+    return TopicComponent;
+}());
+TopicComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-topic',
+        template: __webpack_require__("../../../../../src/app/topic/topic.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/topic/topic.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], TopicComponent);
+
+//# sourceMappingURL=topic.component.js.map
 
 /***/ }),
 

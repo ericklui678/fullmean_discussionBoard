@@ -32,6 +32,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this._cookieService.get('username')) {
+      this._router.navigate(['dashboard']);
+    }
   }
 
 }

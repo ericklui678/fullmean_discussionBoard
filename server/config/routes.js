@@ -1,5 +1,7 @@
 var users = require('../controllers/users.js');
 var topics = require('../controllers/topics.js');
+var path = require('path');
+
 module.exports = function(app) {
   app.get('/', function(req, res, next){
     res.send('hello world')
@@ -13,6 +15,9 @@ module.exports = function(app) {
   })
   app.get('/topics/show', function(req, res, next){
     topics.find(req, res)
+  })
+  app.get('*', function(req, res){
+    res.sendFile(path.resolve('public/dist/index.html'));
   })
   // app.post('/new', function(req, res, next) {
   //   notes.create(req, res)

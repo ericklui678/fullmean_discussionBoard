@@ -3,11 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 // remember to import components
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { TopicComponent } from './topic/topic.component';
 
 
 const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent },
+    { path: 'topic/:id', component: TopicComponent },
+    { path: '**', redirectTo: ''},
   // { path: '', pathMatch: 'full', component: LandingComponent },
   // { path: 'home', component: HomeComponent },
   // { path: 'notes/private', component: NotesPrivateComponent },
