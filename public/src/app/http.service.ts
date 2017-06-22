@@ -41,8 +41,12 @@ export class HttpService {
     .toPromise();
   }
   passComment(comment) {
-    console.log(comment);
     return this._http.post('/comment', comment)
+    .map( data => data.json() )
+    .toPromise();
+  }
+  getUserInfo(user_id) {
+    return this._http.get('/user/' + user_id)
     .map( data => data.json() )
     .toPromise();
   }

@@ -30,6 +30,10 @@ module.exports = function(app) {
   app.post('/comment', function(req, res, next){
     comments.create(req, res)
   })
+  app.get('/user/:id', function(req, res, next){
+    users.show(req, res)
+    // topics.showUser(req, res)
+  })
   app.get('*', function(req, res){
     res.sendFile(path.resolve('public/dist/index.html'));
   })

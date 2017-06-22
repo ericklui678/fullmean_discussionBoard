@@ -55,7 +55,6 @@ export class TopicComponent{
     post._user = this._cookieService.get('userid');
     this._http.passPost(post)
     .then( obj => {
-      console.log(obj);
       form.resetForm();
       this._http.showTopic(this.topic_id)
         .then( data => {
@@ -73,11 +72,9 @@ export class TopicComponent{
     // this.comment_obj._topic = this.topic_id;
     this._http.passComment(this.comment_obj)
     .then( data => {
-      console.log('PASS COMMENT DATA', data);
       this._http.showTopic(this.topic_id)
         .then( obj => {
           this.posts = obj.posts;
-          console.log('POST OBJECT', obj)
         })
         .catch ( err => {console.log('some error');})
     })

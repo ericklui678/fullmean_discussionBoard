@@ -26,5 +26,11 @@ module.exports = {
       if(err) { console.log(err); }
       if(data) { console.log('incremented'); }
     })
+  },
+  show: function (req, res){
+    User.find({_id: req.params.id}, function (err, data){
+      if(err) { console.log(err); }
+      if(data) { res.json(data); }
+    })
   }
 }

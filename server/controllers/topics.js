@@ -13,7 +13,9 @@ module.exports = {
   find: function (req, res){
     Topic.find(function(err, data){
       if(err) { console.log(err); }
-    }).populate('_user')
+    })
+    .sort({'createdAt': -1})
+    .populate('_user')
     .exec(function(err, data){
       if(data) { res.json(data); }
     })
@@ -43,6 +45,7 @@ module.exports = {
       path: 'posts',
       populate: {
         path: '_user comments',
+        options: { sort: {'createdAt': -1} },
         populate: {
           path: '_user',
         }
@@ -51,6 +54,12 @@ module.exports = {
     .exec(function (err, data) {
       console.log('FROM TOPIC CONTROLLER:', data);
       res.json(data);
+    })
+  },
+  showUser: function(req, res){
+    Topic.count({_user: req.params.id}, function (err, data){
+      if(err) {console.log(err);}
+      if(data) {res.json(data);}
     })
   }
 }

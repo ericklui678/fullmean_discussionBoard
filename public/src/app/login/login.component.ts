@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
     this._http.passName({name: name})
     .then( obj => {
       if (obj) {
-        console.log(obj);
         this._cookieService.put('userid', obj._id);
         this._cookieService.put('username', obj.name);
         this._router.navigate(['dashboard']);
