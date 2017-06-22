@@ -9,6 +9,12 @@ import { HttpService } from 'app/http.service';
   styleUrls: ['./topic.component.css']
 })
 export class TopicComponent{
+  comment_obj = {
+    text: '',
+    _post: '',
+    _user: '',
+    // _topic: '',
+  }
   topic_id = '';
   topics = {
     title: '',
@@ -59,4 +65,30 @@ export class TopicComponent{
     })
     .catch ( err => {console.log(err);})
   }
+
+  commentSubmit(comment, post_id, form){
+    this.comment_obj.text = comment;
+    this.comment_obj._post = post_id;
+    this.comment_obj._user = this._cookieService.get('userid');
+    // this.comment_obj._topic = this.topic_id;
+    this._http.passComment(this.comment_obj)
+    .then( data => {
+      console.log('PASS COMMENT DATA', data);
+      this._http.showTopic(this.topic_id)
+        .then( obj => {
+          this.posts = obj.posts;
+          console.log('POST OBJECT', obj)
+        })
+        .catch ( err => {console.log('some error');})
+    })
+    .catch ( err => {console.log(err);})
+    form.resetForm();
+  }
 }
+
+// comment_obj = {
+//     text: '',
+//     _post: '',
+//     _user: '',
+//     _topic: '',
+//   }

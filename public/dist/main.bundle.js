@@ -199,7 +199,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Hello {{ name }} {{ userid }}</h2>\n<button (click)='logout()'>Logout</button>\n\n  <table>\n    <tr>\n      <th>Category</th>\n      <th>Topic</th>\n      <th>User Name</th>\n      <th>Posts</th>\n    </tr>\n    <tr *ngFor='let topic of topics'>\n      <td>{{ topic.category }}</td>\n      <td><a [routerLink]=\"['/topic/', topic._id]\">{{ topic.title }}</a></td>\n      <td>{{ topic.username }}</td>\n      <td>{{ topic.count }}</td>\n    </tr>\n  </table>\n<form #topicForm='ngForm' (submit)='onSubmit(topic_obj, topicForm)'>\n  Topic: <input type=\"text\" name=\"topic\"\n  [(ngModel)]='topic_obj.title'\n  #topic='ngModel'\n  required\n  minlength='5'>\n  <div *ngIf='topic.errors && (topic.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='topic.errors.required'>Topic is required</div>\n    <div *ngIf='topic.errors.minlength'>Topic must be at least 5 characters</div>\n  </div>\n  <br>\n  Description: <textarea name=\"description \"rows=\"5\" cols=\"40\"\n  [(ngModel)]='topic_obj.text'\n  #description='ngModel'\n  required\n  minlength='5'></textarea>\n  <div *ngIf='description.errors && (description.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='description.errors.required'>Description is required</div>\n    <div *ngIf='description.errors.minlength'>Description must be at least 5 characters</div>\n  </div>\n  <br>\n  Category: \n  <select name=\"category\"\n  [(ngModel)]='topic_obj.category'\n  required>\n    <option value=\"HTML\">HTML</option>\n    <option value=\"CSS\">CSS</option>\n    <option value=\"Python\">Python</option>\n    <option value=\"Django\">Django</option>\n    <option value=\"Javascript\">Javascript</option>\n  </select><br>\n  <input [disabled]='!topicForm.valid' type=\"submit\">\n</form>"
+module.exports = "<h2>Hello {{ name }} {{ userid }}</h2>\n<button (click)='logout()'>Logout</button>\n\n  <table>\n    <tr>\n      <th>Category</th>\n      <th>Topic</th>\n      <th>User Name</th>\n      <th>Posts</th>\n    </tr>\n    <tr *ngFor='let topic of topics'>\n      <td>{{ topic.category }}</td>\n      <td><a [routerLink]=\"['/topic/', topic._id]\">{{ topic.title }}</a></td>\n      <td><a [routerLink]=\"['/user/', topic._user._id]\">{{ topic._user.name }}</a></td>\n      <td>{{ topic.count }}</td>\n    </tr>\n  </table>\n<form #topicForm='ngForm' (submit)='onSubmit(topic_obj, topicForm)'>\n  Topic: <input type=\"text\" name=\"topic\"\n  [(ngModel)]='topic_obj.title'\n  #topic='ngModel'\n  required\n  minlength='5'>\n  <div *ngIf='topic.errors && (topic.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='topic.errors.required'>Topic is required</div>\n    <div *ngIf='topic.errors.minlength'>Topic must be at least 5 characters</div>\n  </div>\n  <br>\n  Description: <textarea name=\"description \"rows=\"5\" cols=\"40\"\n  [(ngModel)]='topic_obj.text'\n  #description='ngModel'\n  required\n  minlength='5'></textarea>\n  <div *ngIf='description.errors && (description.touched || topicForm.submitted )' class='red'>\n    <div *ngIf='description.errors.required'>Description is required</div>\n    <div *ngIf='description.errors.minlength'>Description must be at least 5 characters</div>\n  </div>\n  <br>\n  Category: \n  <select name=\"category\"\n  [(ngModel)]='topic_obj.category'\n  required>\n    <option value=\"HTML\">HTML</option>\n    <option value=\"CSS\">CSS</option>\n    <option value=\"Python\">Python</option>\n    <option value=\"Django\">Django</option>\n    <option value=\"Javascript\">Javascript</option>\n  </select><br>\n  <input [disabled]='!topicForm.valid' type=\"submit\">\n</form>"
 
 /***/ }),
 
@@ -245,8 +245,6 @@ var DashboardComponent = (function () {
     DashboardComponent.prototype.onSubmit = function (topic, form) {
         var _this = this;
         topic._user = this.userid;
-        topic.username = this.name;
-        console.log('From dashboard:', topic);
         this._http.passTopic(topic)
             .then(function (obj) {
             form.resetForm();
@@ -329,7 +327,6 @@ var HttpService = (function () {
             .toPromise();
     };
     HttpService.prototype.getTopic = function () {
-        console.log('Getting topics from service');
         return this._http.get('/topics/show')
             .map(function (data) { return data.json(); })
             .toPromise();
@@ -346,6 +343,12 @@ var HttpService = (function () {
     };
     HttpService.prototype.showTopic = function (topic_id) {
         return this._http.get('/topicAll/' + topic_id)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.passComment = function (comment) {
+        console.log(comment);
+        return this._http.post('/comment', comment)
             .map(function (data) { return data.json(); })
             .toPromise();
     };
@@ -473,7 +476,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/topic/topic.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1> {{ topics.username }} posted a topic</h1>\n<h2>Topic: {{ topics.title }}</h2>\n<h3>Description: {{ topics.text }}</h3>\n<h4>Post your answer here</h4>\n<form #postForm='ngForm' (submit)='onSubmit(post, postForm)'>\n  <textarea name=\"answer\" rows=\"4\" cols=\"80\"\n  [(ngModel)]='post.text'\n  #answer='ngModel'\n  required\n  minlength='5'></textarea><br>\n  <input [disabled]='!postForm.valid' type=\"submit\">\n</form>\n<div *ngIf='answer.errors && (answer.touched || postForm.submitted )' class='red'>\n  <div *ngIf='answer.errors.required'>Post is required</div>\n  <div *ngIf='answer.errors.minlength'>Post must be at least 5 characters</div>\n</div>\n\n<div *ngFor='let post of posts'>\n  {{ post.text }} <br>\n  {{ post._user}} <br>\n</div>\n"
+module.exports = "<h1> {{ topics.username }} posted a topic</h1>\n<h2>Topic: {{ topics.title }}</h2>\n<h3>Description: {{ topics.text }}</h3>\n<h4>Post your answer here</h4>\n<form #postForm='ngForm' (submit)='onSubmit(post, postForm)'>\n  <textarea name=\"answer\" rows=\"4\" cols=\"80\"\n  [(ngModel)]='post.text'\n  #answer='ngModel'\n  required\n  minlength='5'></textarea><br>\n  <input [disabled]='!postForm.valid' type=\"submit\">\n</form>\n<div *ngIf='answer.errors && (answer.touched || postForm.submitted )' class='red'>\n  <div *ngIf='answer.errors.required'>Post is required</div>\n  <div *ngIf='answer.errors.minlength'>Post must be at least 5 characters</div>\n</div>\n\n<div *ngFor='let post of posts'>\n  <h3><a [routerLink]=\"['/user', post._user._id]\">{{ post._user.name }}</a>: {{ post.text }}</h3><br>\n  <form #commentForm='ngForm' (submit)='commentSubmit(comment.value, post._id, commentForm)'>\n    <textarea name=\"comment\" cols=\"40\" rows=\"3\"\n    required\n    minlength='5'\n    #comment\n    ></textarea><br>\n    <input [disabled]='!commentForm.valid' type=\"submit\" value=\"Comment\">\n  </form>\n  <div *ngFor='let comment of post.comments'>\n    {{ comment._user.name }}: {{ comment.text }}\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -506,6 +509,11 @@ var TopicComponent = (function () {
         this._route = _route;
         this._cookieService = _cookieService;
         this._http = _http;
+        this.comment_obj = {
+            text: '',
+            _post: '',
+            _user: '',
+        };
         this.topic_id = '';
         this.topics = {
             title: '',
@@ -551,6 +559,25 @@ var TopicComponent = (function () {
         })
             .catch(function (err) { console.log(err); });
     };
+    TopicComponent.prototype.commentSubmit = function (comment, post_id, form) {
+        var _this = this;
+        this.comment_obj.text = comment;
+        this.comment_obj._post = post_id;
+        this.comment_obj._user = this._cookieService.get('userid');
+        // this.comment_obj._topic = this.topic_id;
+        this._http.passComment(this.comment_obj)
+            .then(function (data) {
+            console.log('PASS COMMENT DATA', data);
+            _this._http.showTopic(_this.topic_id)
+                .then(function (obj) {
+                _this.posts = obj.posts;
+                console.log('POST OBJECT', obj);
+            })
+                .catch(function (err) { console.log('some error'); });
+        })
+            .catch(function (err) { console.log(err); });
+        form.resetForm();
+    };
     return TopicComponent;
 }());
 TopicComponent = __decorate([
@@ -563,6 +590,12 @@ TopicComponent = __decorate([
 ], TopicComponent);
 
 var _a, _b, _c;
+// comment_obj = {
+//     text: '',
+//     _post: '',
+//     _user: '',
+//     _topic: '',
+//   } 
 //# sourceMappingURL=topic.component.js.map
 
 /***/ }),

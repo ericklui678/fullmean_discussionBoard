@@ -21,7 +21,6 @@ export class HttpService {
     .toPromise();
   }
   getTopic() {
-    console.log('Getting topics from service');
     return this._http.get('/topics/show')
     .map( data => data.json() )
     .toPromise();
@@ -38,6 +37,12 @@ export class HttpService {
   }
   showTopic(topic_id) {
     return this._http.get('/topicAll/' + topic_id)
+    .map( data => data.json() )
+    .toPromise();
+  }
+  passComment(comment) {
+    console.log(comment);
+    return this._http.post('/comment', comment)
     .map( data => data.json() )
     .toPromise();
   }

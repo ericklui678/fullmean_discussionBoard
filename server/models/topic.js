@@ -5,7 +5,6 @@ var TopicSchema = new mongoose.Schema({
   title: { type: String, required: [true, 'title required'], minlength: 5 },
   text: { type: String, required: [true, 'text required'], minlength: 5 },
   category: { type: String, required: [true, 'category required'] },
-  username: { type: String, required: [true, 'username required'] },
   _user: { type: Schema.Types.ObjectId, ref: 'User' },
   posts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
   count: { type: Number, default: 0 }

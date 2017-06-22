@@ -11,7 +11,7 @@
     <tr *ngFor='let topic of topics'>
       <td>{{ topic.category }}</td>
       <td><a [routerLink]="['/topic/', topic._id]">{{ topic.title }}</a></td>
-      <td>{{ topic.username }}</td>
+      <td><a [routerLink]="['/user/', topic._user._id]">{{ topic._user.name }}</a></td>
       <td>{{ topic.count }}</td>
     </tr>
   </table>

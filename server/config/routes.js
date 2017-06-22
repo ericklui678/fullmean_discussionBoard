@@ -1,6 +1,7 @@
 var users = require('../controllers/users.js');
 var topics = require('../controllers/topics.js');
 var posts = require('../controllers/posts.js');
+var comments = require('../controllers/comments.js');
 var path = require('path');
 
 module.exports = function(app) {
@@ -21,11 +22,13 @@ module.exports = function(app) {
     topics.findOne(req, res)
   })
   app.post('/post', function(req, res, next){
-    posts.create(req, res)
     topics.addPost(req, res)
   })
   app.get('/topicAll/:id', function(req, res, next){
     topics.showAll(req, res)
+  })
+  app.post('/comment', function(req, res, next){
+    comments.create(req, res)
   })
   app.get('*', function(req, res){
     res.sendFile(path.resolve('public/dist/index.html'));

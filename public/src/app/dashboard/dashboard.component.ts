@@ -29,8 +29,6 @@ export class DashboardComponent implements OnInit {
 
   onSubmit(topic, form){
     topic._user = this.userid;
-    topic.username = this.name;
-    console.log('From dashboard:', topic);
     this._http.passTopic(topic)
     .then( obj => {
       form.resetForm();

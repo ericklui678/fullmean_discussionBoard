@@ -13,8 +13,10 @@ module.exports = {
   find: function (req, res){
     Topic.find(function(err, data){
       if(err) { console.log(err); }
+    }).populate('_user')
+    .exec(function(err, data){
       if(data) { res.json(data); }
-    }).sort({'createdAt': -1})
+    })
   },
   findOne: function (req, res){
     Topic.find({_id: req.params.id}, function (err, data){
@@ -30,15 +32,24 @@ module.exports = {
       post.save(function(err){
         topic.save(function(err){
           if(err) { console.log(err) }
-          else { console.log('successfully pushed'); }
+          else { res.json(topic); }
         })
       })
     })
   },
   showAll: function(req, res){
     Topic.findOne({_id: req.params.id})
-    .populate('posts')
+    .populate({
+      path: 'posts',
+      populate: {
+        path: '_user comments',
+        populate: {
+          path: '_user',
+        }
+      },
+    })
     .exec(function (err, data) {
+      console.log('FROM TOPIC CONTROLLER:', data);
       res.json(data);
     })
   }
