@@ -26,6 +26,21 @@ export class HttpService {
     .map( data => data.json() )
     .toPromise();
   }
+  getTopicFromID(topic_id){
+    return this._http.get('/topic/' + topic_id)
+    .map( data => data.json() )
+    .toPromise();
+  }
+  passPost(post) {
+    return this._http.post('/post', post)
+    .map( data => data.json() )
+    .toPromise();
+  }
+  showTopic(topic_id) {
+    return this._http.get('/topicAll/' + topic_id)
+    .map( data => data.json() )
+    .toPromise();
+  }
   //   create(quote) {
   //   console.log('SERVICE DATA PARAM', quote);
   //   return this._http.post('/new', quote)

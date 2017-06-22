@@ -78,7 +78,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<head>\n  <script src=\"https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/x.x.x/ng2-bootstrap.min.js\"></script>\n   <link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" rel=\"stylesheet\">\n</head>\n<div class=\"wrapper\">\n  <h1>APP-COMPONENT</h1>\n  <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<head>\n  <script src=\"https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/x.x.x/ng2-bootstrap.min.js\"></script>\n   <link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" rel=\"stylesheet\">\n</head>\n<div class=\"wrapper\">\n  <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -281,7 +281,7 @@ DashboardComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/dashboard/dashboard.component.html"),
         styles: [__webpack_require__("../../../../../src/app/dashboard/dashboard.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */]) === "function" && _c || Object])
 ], DashboardComponent);
 
 var _a, _b, _c;
@@ -331,6 +331,21 @@ var HttpService = (function () {
     HttpService.prototype.getTopic = function () {
         console.log('Getting topics from service');
         return this._http.get('/topics/show')
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.getTopicFromID = function (topic_id) {
+        return this._http.get('/topic/' + topic_id)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.passPost = function (post) {
+        return this._http.post('/post', post)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.showTopic = function (topic_id) {
+        return this._http.get('/topicAll/' + topic_id)
             .map(function (data) { return data.json(); })
             .toPromise();
     };
@@ -429,7 +444,7 @@ LoginComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/login/login.component.html"),
         styles: [__webpack_require__("../../../../../src/app/login/login.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */]) === "function" && _c || Object])
 ], LoginComponent);
 
 var _a, _b, _c;
@@ -445,7 +460,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".red{\n  color: red;\n}", ""]);
 
 // exports
 
@@ -458,7 +473,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/topic/topic.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Topic</h1>"
+module.exports = "<h1> {{ topics.username }} posted a topic</h1>\n<h2>Topic: {{ topics.title }}</h2>\n<h3>Description: {{ topics.text }}</h3>\n<h4>Post your answer here</h4>\n<form #postForm='ngForm' (submit)='onSubmit(post, postForm)'>\n  <textarea name=\"answer\" rows=\"4\" cols=\"80\"\n  [(ngModel)]='post.text'\n  #answer='ngModel'\n  required\n  minlength='5'></textarea><br>\n  <input [disabled]='!postForm.valid' type=\"submit\">\n</form>\n<div *ngIf='answer.errors && (answer.touched || postForm.submitted )' class='red'>\n  <div *ngIf='answer.errors.required'>Post is required</div>\n  <div *ngIf='answer.errors.minlength'>Post must be at least 5 characters</div>\n</div>\n\n<div *ngFor='let post of posts'>\n  {{ post.text }} <br>\n  {{ post._user}} <br>\n</div>\n"
 
 /***/ }),
 
@@ -467,6 +482,10 @@ module.exports = "<h1>Topic</h1>"
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__ = __webpack_require__("../../../../angular2-cookie/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_http_service__ = __webpack_require__("../../../../../src/app/http.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TopicComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -478,10 +497,59 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var TopicComponent = (function () {
-    function TopicComponent() {
+    function TopicComponent(_route, _cookieService, _http) {
+        var _this = this;
+        this._route = _route;
+        this._cookieService = _cookieService;
+        this._http = _http;
+        this.topic_id = '';
+        this.topics = {
+            title: '',
+            text: '',
+            category: '',
+            username: '',
+            _user: '',
+            count: 0
+        };
+        this.post = {
+            text: '',
+            _topic: '',
+            _user: '',
+        };
+        this.posts = [];
+        this._route.params.subscribe(function (param) {
+            _this._http.getTopicFromID(param.id)
+                .then(function (obj) {
+                _this.topic_id = param.id;
+                _this.topics = obj[0];
+                _this._http.showTopic(_this.topic_id)
+                    .then(function (data) {
+                    _this.posts = data.posts;
+                })
+                    .catch(function (err) { console.log('some error'); });
+            })
+                .catch(function (err) { console.log(err); });
+        });
     }
-    TopicComponent.prototype.ngOnInit = function () {
+    TopicComponent.prototype.onSubmit = function (post, form) {
+        var _this = this;
+        post._topic = this.topic_id;
+        post._user = this._cookieService.get('userid');
+        this._http.passPost(post)
+            .then(function (obj) {
+            console.log(obj);
+            form.resetForm();
+            _this._http.showTopic(_this.topic_id)
+                .then(function (data) {
+                _this.posts = data.posts;
+            })
+                .catch(function (err) { console.log('some error'); });
+        })
+            .catch(function (err) { console.log(err); });
     };
     return TopicComponent;
 }());
@@ -491,9 +559,10 @@ TopicComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/topic/topic.component.html"),
         styles: [__webpack_require__("../../../../../src/app/topic/topic.component.css")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_core__["CookieService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3_app_http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_app_http_service__["a" /* HttpService */]) === "function" && _c || Object])
 ], TopicComponent);
 
+var _a, _b, _c;
 //# sourceMappingURL=topic.component.js.map
 
 /***/ }),
