@@ -34,6 +34,12 @@ module.exports = function(app) {
     users.show(req, res)
     // topics.showUser(req, res)
   })
+  app.post('/addpost', function(req, res, next){
+    users.incrPost(req, res)
+  })
+  app.post('/addcomment', function(req, res, next){
+    users.incrComment(req, res)
+  })
   app.get('*', function(req, res){
     res.sendFile(path.resolve('public/dist/index.html'));
   })

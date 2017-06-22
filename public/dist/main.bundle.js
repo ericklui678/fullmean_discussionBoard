@@ -362,6 +362,17 @@ var HttpService = (function () {
             .map(function (data) { return data.json(); })
             .toPromise();
     };
+    HttpService.prototype.incrUserPost = function (user) {
+        return this._http.post('/addpost', user)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.incrUserComment = function (user) {
+        console.log('SERVICE:', user);
+        return this._http.post('/addcomment', user)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
     return HttpService;
 }());
 HttpService = __decorate([
@@ -556,6 +567,11 @@ var TopicComponent = (function () {
         var _this = this;
         post._topic = this.topic_id;
         post._user = this._cookieService.get('userid');
+        this._http.incrUserPost({ id: post._user })
+            .then(function (obj) {
+            console.log('Received from IncrUserPost', obj);
+        })
+            .catch(function (err) { console.log(err); });
         this._http.passPost(post)
             .then(function (obj) {
             form.resetForm();
@@ -572,7 +588,6 @@ var TopicComponent = (function () {
         this.comment_obj.text = comment;
         this.comment_obj._post = post_id;
         this.comment_obj._user = this._cookieService.get('userid');
-        // this.comment_obj._topic = this.topic_id;
         this._http.passComment(this.comment_obj)
             .then(function (data) {
             _this._http.showTopic(_this.topic_id)
@@ -583,6 +598,11 @@ var TopicComponent = (function () {
         })
             .catch(function (err) { console.log(err); });
         form.resetForm();
+        this._http.incrUserComment({ id: this._cookieService.get('userid') })
+            .then(function (obj) {
+            console.log(obj);
+        })
+            .catch(function (err) { console.log(err); });
     };
     return TopicComponent;
 }());
@@ -627,7 +647,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/user/user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>{{ user.name }}</h1>\n<h3>Topic Count: {{ user.tCount }}</h3>"
+module.exports = "<h1>{{ user.name }}</h1>\n<h3>Topic Count: {{ user.tCount }}</h3>\n<h3>Post Count: {{ user.pCount }}</h3>\n<h3>Comment Count: {{ user.cCount }}</h3>"
 
 /***/ }),
 

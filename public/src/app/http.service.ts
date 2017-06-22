@@ -50,6 +50,17 @@ export class HttpService {
     .map( data => data.json() )
     .toPromise();
   }
+  incrUserPost(user) {
+    return this._http.post('/addpost', user)
+    .map( data => data.json() )
+    .toPromise();
+  }
+  incrUserComment(user) {
+    console.log('SERVICE:', user);
+    return this._http.post('/addcomment', user)
+    .map( data => data.json() )
+    .toPromise();
+  }
   //   create(quote) {
   //   console.log('SERVICE DATA PARAM', quote);
   //   return this._http.post('/new', quote)

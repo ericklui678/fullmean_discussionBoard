@@ -32,5 +32,17 @@ module.exports = {
       if(err) { console.log(err); }
       if(data) { res.json(data); }
     })
-  }
+  },
+  incrPost: function (req, res) {
+    User.findOneAndUpdate({_id: req.body.id}, {$inc: {pCount: 1}}, function (err, data){
+      if(err) { console.log(err); }
+      if(data) { res.json(data); }
+    })
+  },
+  incrComment: function (req, res) {
+    User.findOneAndUpdate({_id: req.body.id}, {$inc: {cCount: 1}}, function (err, data){
+      if(err) { console.log(err); }
+      if(data) { res.json(data); }
+    })
+  },
 }

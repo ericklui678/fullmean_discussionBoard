@@ -53,6 +53,13 @@ export class TopicComponent{
   onSubmit(post, form){
     post._topic = this.topic_id;
     post._user = this._cookieService.get('userid');
+
+    this._http.incrUserPost({id: post._user})
+    .then (obj => {
+      console.log('Received from IncrUserPost', obj);
+    })
+    .catch ( err => {console.log(err);})
+
     this._http.passPost(post)
     .then( obj => {
       form.resetForm();
@@ -69,7 +76,6 @@ export class TopicComponent{
     this.comment_obj.text = comment;
     this.comment_obj._post = post_id;
     this.comment_obj._user = this._cookieService.get('userid');
-    // this.comment_obj._topic = this.topic_id;
     this._http.passComment(this.comment_obj)
     .then( data => {
       this._http.showTopic(this.topic_id)
@@ -80,6 +86,11 @@ export class TopicComponent{
     })
     .catch ( err => {console.log(err);})
     form.resetForm();
+    this._http.incrUserComment({id: this._cookieService.get('userid')} )
+    .then( obj => {
+      console.log(obj);
+    })
+    .catch ( err => {console.log(err);})
   }
 }
 

@@ -52,7 +52,6 @@ module.exports = {
       },
     })
     .exec(function (err, data) {
-      console.log('FROM TOPIC CONTROLLER:', data);
       res.json(data);
     })
   },
